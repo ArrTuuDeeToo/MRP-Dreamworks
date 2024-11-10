@@ -34,6 +34,18 @@ h2 {
   justify-content: space-between;
   margin-bottom: 10px;
 }
+.item-category {
+    padding: 10px;
+    border-bottom: 1px solid #4a4a4a;
+}
+
+.item-category:last-child {
+    border-bottom: none;
+}
+
+.item-category h4 {
+    margin-top: 0;
+}
 
 button {
   background-color: #777;
