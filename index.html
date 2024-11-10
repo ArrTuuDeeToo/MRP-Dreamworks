@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,162 +7,368 @@
     <title>Item Order Summary</title>
     <style>
         body {
+            background-color: #2c2c2c;
+            color: #ffffff;
             font-family: Arial, sans-serif;
-            background-color: #2e2e2e;
-            color: #f2f2f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            padding: 20px;
+            min-height: 100vh;
         }
 
-       .container {
+        .container {
             display: flex;
-            flex-direction: column;
+            max-width: 1400px;
+            margin: 0 auto;
             gap: 20px;
         }
 
-       .menu,.summary {
-            background-color: #444;
+        .left-panel {
+            flex: 2;
+            min-width: 400px;
+        }
+
+        .right-panel {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .card {
+            background-color: #3a3a3a;
             padding: 20px;
             border-radius: 8px;
-            width: 300px;
-        }
-
-        h2 {
-            text-align: center;
-        }
-
-       .items,.discounts {
-            margin-top: 15px;
-        }
-
-       .item {
-            display: flex;
-            justify-content: space-between;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             margin-bottom: 10px;
         }
 
-       .category {
+        .card h3 {
+            text-align: center;
+            color: #f2f2f2;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a4a4a;
+        }
+
+        .item-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        .item {
+            background-color: #444;
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 1 45%;
+            max-width: 400px;
+            margin-bottom: 5px;
+        }
+
+        .item-name {
+            font-size: 1rem;
+            color: #ffffff;
+            flex: 1;
+            white-space: nowrap;
+        }
+
+        .quantity-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .quantity-buttons button {
+            background-color: #555;
+            color: #ffffff;
+            border: none;
+            padding: 6px 8px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .quantity-buttons button:hover {
+            background-color: #666;
+        }
+
+        .discount-options {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background-color: #444;
+            border-radius: 6px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .discount-options label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #order-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #order-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #4a4a4a;
+        }
+
+        .subtotal {
+            font-weight: bold;
+            margin-top: 15px;
+            text-align: right;
+            padding: 10px;
+            background-color: #444;
+            border-radius: 6px;
+        }
+
+        .order-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
             margin-top: 15px;
         }
 
-       .category h3 {
-            margin-top: 0;
-        }
-
-        button {
-            background-color: #777;
-            color: white;
-            border: none;
-            padding: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
+        .order-actions button {
             background-color: #555;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .order-actions button:hover {
+            background-color: #666;
+        }
+
+        .favorite-item {
+            background-color: #444;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .favorite-name {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .favorite-name span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .favorite-name input {
+            flex: 1;
+            background: #555;
+            border: 1px solid #666;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .favorite-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .favorite-actions button {
+            background-color: #555;
+            color: #ffffff;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .favorite-actions button:hover {
+            background-color: #666;
+        }
+
+        .delete-button {
+            background-color: #873535 !important;
+        }
+
+        .delete-button:hover {
+            background-color: #a84242 !important;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="menu">
-            <h2>Item Menu</h2>
-            <div class="category">
-                <h3>Repairs</h3>
-                <div class="items">
-                    <div class="item">
-                        <span> S CLASS REPAIRS (ALL PD CARS) - $5000</span>
-                        <button onclick="addItem('S CLASS REPAIRS (ALL PD CARS)', 5000, 1)">+1</button>
-                    </div>
-                    <div class="item">
-                        <span> A CLASS REPAIRS - $4000</span>
-                        <button onclick="addItem('A CLASS REPAIRS', 4000, 1)">+1</button>
-                    </div>
-                    <div class="item">
-                        <span> B-D CLASS REPAIRS - $2500</span>
-                        <button onclick="addItem('B-D CLASS REPAIRS', 2500, 1)">+1</button>
-                    </div>
-                    <div class="item">
-                        <span> REPAIR KIT - $2500</span>
-                        <button onclick="addItem('REPAIR KIT', 2500, 4)">+4</button>
-                    </div>
-                    <div class="item">
-                        <span> ADVANCED REPAIR KIT - $5500</span>
-                        <button onclick="addItem('ADVANCED REPAIR KIT', 5500, 4)">+4</button>
-                    </div>
-                </div>
-            </div>
-            <div class="category">
-                <h3>Items</h3>
-                <div class="items">
-                    <div class="item">
-                        <span> LOCKPICKS - $1500 </span>
-                        <button onclick="addItem('LOCKPICKS', 1000, 1)">+1</button>
-                        <button onclick="addItem('LOCKPICKS', 1500, 3)">+3</button>
-                    </div>
-                    <div class="item">
-                        <span> ADVANCED LOCKPICKS - $6000</span>
-                        <button onclick="addItem('ADVANCED LOCKPICKS', 6000, 3)">+3</button>
-                    </div>
-                    <div class="item">
-                        <span> MATERIALS - 3</span>
-                        <button onclick="addItem('MATERIALS', 3, 1)">+1</button>
-                        <button onclick="addItem('MATERIALS', 3, 10)">+10</button>
-                        <button onclick="addItem('MATERIALS', 3, 100)">+100</button>
-                    </div>
-                    <div class="item">
-                        <span> CAR CLEANING KIT - $2500</span>
-                        <button onclick="addItem('CAR CLEANING KIT', 2500, 4)">+4</button>
-                    </div>
-                </div>
-            </div>
-            <div class="category">
-                <h3>Upgrades</h3>
-                <div class="items">
-                    <div class="item">
-                        <span> TURBO - $15000</span>
-                        <button onclick="addItem('TURBO', 15000, 1)">+1</button>
-                    </div>
+        <!-- Left Panel: Item Menu -->
+        <div class="left-panel">
+            <div class="card" id="item-menu">
+                <h3>Item Menu</h3>
+                <div class="item-grid">
+       <div class="item">
+    <span class="item-name">🚗 S CLASS REPAIRS (ALL PD CARS) - $5000</span>
+    <div class="quantity-buttons">
+        <button onclick="addItem('S CLASS REPAIRS (ALL PD CARS)', 5000, 1)">+1</button>
+    </div>
+</div>
+
+<div class="item">
+    <span class="item-name">🚗 A CLASS REPAIRS - $4000</span>
+    <div class="quantity-buttons">
+        <button onclick="addItem('A CLASS REPAIRS', 4000, 1)">+1</button>
+    </div>
+</div>
+
+<div class="item">
+    <span class="item-name">🚗 B-D CLASS REPAIRS - $2500</span>
+    <div class="quantity-buttons">
+        <button onclick="addItem('B-D CLASS REPAIRS', 2500, 1)">+1</button>
+    </div>
+</div>
+
+<div class="item">
+    <span class="item-name">🚀 TURBO - $15000</span>
+    <div class="quantity-buttons">
+        <button onclick="addItem('TURBO', 15000, 1)">+1</button>
+    </div>
+</div>
+
+<div class="item">
+    <span class="item-name">🔓 LOCKPICKS - $1500 </span>
+    <div class="quantity-buttons">
+        <button onclick="addItem('LOCKPICKS', 1000, 1)">+1</button>
+        <button onclick="addItem('LOCKPICKS', 1500, 3)">+3</button>
+    </div>
+</div>
+
+<div class="item">
+    <span class="item-name">🔓 ADVANCED LOCKPICKS - $6000</span>
+    <div class="quantity-buttons">
+        <button onclick="addItem('ADVANCED LOCKPICKS', 6000, 3)">+3</button>
+    </div>
+</div>
+
+<div class="item">
+    <span class="item-name">🛠️ ADVANCED REPAIR KIT - $5500</span>
+    <div class="quantity-buttons">
+        <button onclick="addItem('ADVANCED REPAIR KIT', 5500, 4)">+4</button>
+    </div>
+</div>
+
+<div class="item">
+    <span class="item-name">🛠️ REPAIR KIT - $2500</span>
+    <div class="quantity-buttons">
+        <button onclick="addItem('REPAIR KIT', 2500, 4)">+4</button>
+    </div>
+</div>
+
+<div class="item">
+    <span class="item-name">💡 MATERIALS - 3</span>
+    <div class="quantity-buttons">
+        <button onclick="addItem('MATERIALS', 3, 1)">+1</button>
+        <button onclick="addItem('MATERIALS', 3, 10)">+10</button>
+        <button onclick="addItem('MATERIALS', 3, 100)">+100</button>
+    </div>
+</div>
+
+<div class="item">
+    <span class="item-name">💧 CAR CLEANING KIT - $2500</span>
+    <div class="quantity-buttons">
+        <button onclick="addItem('CAR CLEANING KIT', 2500, 4)">+4</button>
+    </div>
+</div>
                 </div>
             </div>
         </div>
-        <div class="summary">
-            <h2>Order Summary</h2>
-            <div id="order-list"></div>
-            <div id="subtotal"></div>
-            <button id="clear-order" onclick="clearOrder()">Clear Order</button>
-            <button id="save-as-favorite" onclick="saveAsFavorite()">Save as Favorite</button>
-            <button id="complete-order" onclick="completeOrder()">Complete Order</button>
+
+        <!-- Right Panel: Favorites, Discounts and Order Summary -->
+        <div class="right-panel">
+            <!-- Favorites -->
+            <div class="card" id="favorites">
+                <h3>Favorite Orders</h3>
+                <div id="favorites-list">No favorite orders saved</div>
+            </div>
+
+            <!-- Discount Options -->
+            <div class="discount-options">
+                <label><input type="checkbox" id="discount50" onchange="updateOrderSummary()"> 50% Discount</label>
+                <label><input type="checkbox" id="discount5" onchange="updateOrderSummary()"> 5% Discount</label>
+            </div>
+
+            <!-- Order Summary -->
+<div class="card" id="order-summary">
+    <h3>Order Summary 📝</h3>
+    <input type="text" id="order-name" placeholder="Order Name">
+    <div id="order-list">No items added</div>
+    <p class="subtotal">Subtotal: $<span id="subtotal">0.00</span></p>
+    <div class="order-actions">
+        <button onclick="clearOrder()">Clear Order 🚮</button>
+        <button onclick="saveAsFavorite()">Save as Favorite ⭐️</button>
+        <button onclick="completeOrder()">Complete Order 🎉</button>
+    </div>
+</div>
         </div>
     </div>
 
     <script>
         let order = {};
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        // Add names to existing favorites if they don't have them
+        favorites = favorites.map((fav, i) => ({
+            ...fav,
+            name: fav.name || `Favorite ${i + 1}`
+        }));
+
+        updateFavorites();
 
         function addItem(name, price, quantity) {
-            if (!order[name]) {
-                order[name] = { price, quantity: 0 };
+            if (order[name]) {
+                order[name].quantity += quantity;
+                order[name].totalPrice += price * quantity;
+            } else {
+                order[name] = { quantity: quantity, totalPrice: price * quantity, price: price };
             }
-            order[name].quantity += quantity;
             updateOrderSummary();
         }
 
         function updateOrderSummary() {
             const orderList = document.getElementById("order-list");
             const subtotalDisplay = document.getElementById("subtotal");
+            const discount50 = document.getElementById("discount50").checked;
+            const discount5 = document.getElementById("discount5").checked;
 
-            let orderSummaryText = "";
+            orderList.innerHTML = "";
             let subtotal = 0;
+            let orderSummaryText = "";
 
-            for (const [name, item] of Object.entries(order)) {
-                orderSummaryText += `<li>${name} x ${item.quantity} = $${(item.price * item.quantity).toFixed(2)}</li>`;
-                subtotal += item.price * item.quantity;
+            for (let itemName in order) {
+                let item = order[itemName];
+                subtotal += item.totalPrice;
+                orderSummaryText += `<li>${item.quantity}x ${itemName} - $${item.totalPrice.toFixed(2)}</li>`;
             }
 
-            orderList.innerHTML = `<ul>${orderSummaryText}</ul>`;
-            subtotalDisplay.textContent = `Subtotal: $${subtotal.toFixed(2)}`;
+            if (discount50) {
+                subtotal *= 0.5;
+            } else if (discount5) {
+                subtotal *= 0.95;
+            }
+
+            orderList.innerHTML = Object.keys(order).length ? `<ul>${orderSummaryText}</ul>` : "No items added";
+            subtotalDisplay.textContent = subtotal.toFixed(2);
         }
 
         function clearOrder() {
@@ -172,7 +379,7 @@
         function saveAsFavorite() {
             if (Object.keys(order).length) {
                 const newFavorite = {
-                   ...order,
+                    ...order,
                     name: `Favorite ${favorites.length + 1}`
                 };
                 favorites.push(newFavorite);
@@ -187,7 +394,7 @@
                 favoritesList.innerHTML = "No favorite orders saved";
             } else {
                 favoritesList.innerHTML = favorites
-                   .map((fav, i) => `
+                    .map((fav, i) => `
                         <div class="favorite-item">
                             <div class="favorite-name">
                                 <span onclick="startRename(${i})">${fav.name}</span>
@@ -199,12 +406,12 @@
                             </div>
                         </div>
                     `)
-                   .join("");
+                    .join("");
             }
         }
 
         function startRename(index) {
-            const favoriteNameElement = document.querySelector(`#favorites-list.favorite-item:nth-child(${index + 1}).favorite-name`);
+            const favoriteNameElement = document.querySelector(`#favorites-list .favorite-item:nth-child(${index + 1}) .favorite-name`);
             const currentName = favorites[index].name;
             favoriteNameElement.innerHTML = `
                 <input type="text" value="${currentName}" onblur="finishRename(${index}, this.value)" onkeypress="handleRenameKeyPress(event, ${index}, this)">
@@ -237,10 +444,51 @@
         }
 
         function loadFavorite(index) {
-            order = {...favorites[index] };
+            order = { ...favorites[index] };
             delete order.name; // Remove the name property from the loaded order
             updateOrderSummary();
         }
+       
+   function completeOrder() {
+    const orderSummary = document.getElementById("order-list");
+    const orderName = document.getElementById("order-name").value;
+    const subtotal = document.getElementById("subtotal").textContent;
+
+    const orderSummaryText = orderSummary.innerHTML.replace(/<ul>/g, '').replace(/<\/ul>/g, '').replace(/<li>/g, '* ').replace(/<\/li>/g, '\n');
+
+    const embed = {
+        "title": "Order Summary",
+        "description": `${orderName}\n\n${orderSummaryText}`,
+        "fields": [
+            {
+                "name": "Subtotal",
+                "value": `$${subtotal}`,
+                "inline": true
+            }
+        ],
+        "color": 0x0099ff
+    };
+
+    const orderData = {
+        "content": "",
+        "embeds": [embed],
+        "username": "MRP-Dreamworks",
+        "avatar_url": "https://example.com/avatar.png"
+    };
+
+    fetch('https://discord.com/api/webhooks/1304960414563700786/1OXg_6GHSgUYSjnvz8lj0JGTb08xO5bBSNTyiXdz_agxJ_WI-DUFx-VH9PpZG7Hbbd1c', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+    })
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error(error));
+
+    clearOrder();
+}
     </script>
 </body>
 </html>
