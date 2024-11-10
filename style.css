@@ -14,7 +14,7 @@ body {
   gap: 20px;
 }
 
-.menu, .summary {
+.menu,.summary {
   background-color: #444;
   padding: 20px;
   border-radius: 8px;
@@ -25,7 +25,7 @@ h2 {
   text-align: center;
 }
 
-.items, .discounts {
+.items,.discounts {
   margin-top: 15px;
 }
 
@@ -34,17 +34,13 @@ h2 {
   justify-content: space-between;
   margin-bottom: 10px;
 }
-.item-category {
-    padding: 10px;
-    border-bottom: 1px solid #4a4a4a;
+
+.category {
+  margin-top: 15px;
 }
 
-.item-category:last-child {
-    border-bottom: none;
-}
-
-.item-category h4 {
-    margin-top: 0;
+.category h3 {
+  margin-top: 0;
 }
 
 button {
