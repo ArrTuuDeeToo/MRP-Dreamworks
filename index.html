@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,377 +5,296 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Item Order Summary</title>
     <style>
+        /* Set background image and overall page styling */
         body {
-            background-color: #2c2c2c;
-            color: #ffffff;
+            background-image: url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            color: #f2f2f2;
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-            min-height: 100vh;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
         }
 
+        /* Logo styling */
+        #logo {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 150px;
+        }
+
+        /* Main container for order summary */
         .container {
             display: flex;
-            max-width: 1400px;
-            margin: 0 auto;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 1100px;
+            flex-wrap: wrap;
             gap: 20px;
         }
 
-        .left-panel {
-            flex: 2;
-            min-width: 400px;
-        }
-
-        .right-panel {
+        .panel {
             flex: 1;
-            min-width: 300px;
-        }
-
-        .card {
-            background-color: #3a3a3a;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-bottom: 10px;
-        }
-
-        .card h3 {
-            text-align: center;
-            color: #f2f2f2;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #4a4a4a;
-        }
-
-        .item-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: flex-start;
-        }
-
-        .item {
+            min-width: 320px;
+            max-width: 500px;
+            margin: 0;
             background-color: #444;
-            padding: 12px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .panel h3 {
+            color: #f2f2f2;
+        }
+
+        /* Set grid for menu items */
+        #item-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 10px;
-            flex: 1 1 45%;
-            max-width: 400px;
-            margin-bottom: 5px;
         }
 
         .item-name {
-            font-size: 1rem;
-            color: #ffffff;
-            flex: 1;
-            white-space: nowrap;
-        }
-
-        .quantity-buttons {
-            display: flex;
-            gap: 5px;
-        }
-
-        .quantity-buttons button {
-            background-color: #555;
-            color: #ffffff;
-            border: none;
-            padding: 6px 8px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .quantity-buttons button:hover {
-            background-color: #666;
-        }
-
-        .discount-options {
-            display: flex;
-            gap: 10px;
-            padding: 10px;
-            background-color: #444;
-            border-radius: 6px;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .discount-options label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #order-list ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        #order-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid #4a4a4a;
-        }
-
-        .subtotal {
             font-weight: bold;
-            margin-top: 15px;
-            text-align: right;
-            padding: 10px;
-            background-color: #444;
-            border-radius: 6px;
+            color: #f2f2f2;
+            margin: 10px 0 5px 0;
+            padding: 5px;
+            background-color: #555;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .item {
+            padding: 8px;
+            border: none;
+            background-color: #666;
+            color: #f2f2f2;
+            cursor: pointer;
+            text-align: center;
+            margin: 2px 0;
+        }
+
+        .item:first-of-type {
+            border-radius: 0 0 0 5px;
+        }
+
+        .item:last-of-type {
+            border-radius: 0 0 5px 5px;
+        }
+
+        .item:hover {
+            background-color: #777;
+        }
+
+        .discount {
+            margin-top: 10px;
         }
 
         .order-actions {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         .order-actions button {
-            background-color: #555;
-            color: #ffffff;
+            padding: 10px;
             border: none;
-            padding: 10px 20px;
-            cursor: pointer;
+            background-color: #666;
+            color: #f2f2f2;
             border-radius: 5px;
-            transition: background-color 0.3s;
+            cursor: pointer;
         }
 
         .order-actions button:hover {
-            background-color: #666;
+            background-color: #777;
         }
 
-        .favorite-item {
-            background-color: #444;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .favorite-name {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .favorite-name span {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .favorite-name input {
-            flex: 1;
-            background: #555;
-            border: 1px solid #666;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-
-        .favorite-actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .favorite-actions button {
-            background-color: #555;
-            color: #ffffff;
-            border: none;
-            padding: 8px 15px;
-            cursor: pointer;
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
             border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .favorite-actions button:hover {
-            background-color: #666;
-        }
-
-        .delete-button {
-            background-color: #873535 !important;
-        }
-
-        .delete-button:hover {
-            background-color: #a84242 !important;
+            border: 1px solid #666;
+            background-color: #555;
+            color: #f2f2f2;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Left Panel: Item Menu -->
         <div class="left-panel">
             <div class="card" id="item-menu">
-                <h3>Item Menu</h3>
-                <div class="item-grid">
-       <div class="item">
-    <span class="item-name">🚗 S CLASS REPAIRS (ALL PD CARS) - $5000</span>
-    <div class="quantity-buttons">
-        <button onclick="addItem('S CLASS REPAIRS (ALL PD CARS)', 5000, 1)">+1</button>
-    </div>
-</div>
-
-<div class="item">
-    <span class="item-name">🚗 A CLASS REPAIRS - $4000</span>
-    <div class="quantity-buttons">
-        <button onclick="addItem('A CLASS REPAIRS', 4000, 1)">+1</button>
-    </div>
-</div>
-
-<div class="item">
-    <span class="item-name">🚗 B-D CLASS REPAIRS - $2500</span>
-    <div class="quantity-buttons">
-        <button onclick="addItem('B-D CLASS REPAIRS', 2500, 1)">+1</button>
-    </div>
-</div>
-
-<div class="item">
-    <span class="item-name">🚗 BODY REPAIRS - $750</span>
-    <div class="quantity-buttons">
-        <button onclick="addItem('B-D CLASS REPAIRS', 750, 1)">+1</button>
-    </div>
-</div>                    
-
-<div class="item">
-    <span class="item-name">🚀 TURBO - $15000</span>
-    <div class="quantity-buttons">
-        <button onclick="addItem('TURBO', 15000, 1)">+1</button>
-    </div>
-</div>
-
-<div class="item">
-    <span class="item-name">🔓 LOCKPICKS - $1000 </span>
-    <div class="quantity-buttons">
-        <button onclick="addItem('LOCKPICKS', 1000, 1)">+1</button>
-        <button onclick="addItem('LOCKPICKS', 500, 3)">+3</button>
-    </div>
-</div>
-
-<div class="item">
-    <span class="item-name">🔓 ADVANCED LOCKPICKS x 3 - $6000</span>
-    <div class="quantity-buttons">
-        <button onclick="addItem('ADVANCED LOCKPICKS', 2000, 3)">+3</button>
-    </div>
-</div>
-
-<div class="item">
-    <span class="item-name">🛠️ ADVANCED REPAIR KIT x 4 - $5500</span>
-    <div class="quantity-buttons">
-        <button onclick="addItem('ADVANCED REPAIR KIT', 1375, 4)">+4</button>
-    </div>
-</div>
-
-<div class="item">
-    <span class="item-name">🛠️ REPAIR KIT X 4 - $2500</span>
-    <div class="quantity-buttons">
-        <button onclick="addItem('REPAIR KIT', 625, 4)">+4</button>
-    </div>
-</div>
-
-<div class="item">
-    <span class="item-name">💡 MATERIALS - 3</span>
-    <div class="quantity-buttons">
-        <button onclick="addItem('MATERIALS', 3, 1)">+1</button>
-        <button onclick="addItem('MATERIALS', 3, 10)">+10</button>
-        <button onclick="addItem('MATERIALS', 3, 100)">+100</button>
-    </div>
-</div>
-
-<div class="item">
-    <span class="item-name">💧 CAR CLEANING KIT X 4 - $2500</span>
-    <div class="quantity-buttons">
-        <button onclick="addItem('CAR CLEANING KIT', 625, 4)">+4</button>
-    </div>
-</div>
-                </div>
+                <h3>Menu Items</h3>
+                <div class="item-grid" id="item-grid"></div>
             </div>
         </div>
 
-        <!-- Right Panel: Favorites, Discounts and Order Summary -->
         <div class="right-panel">
-            <!-- Favorites -->
-            <div class="card" id="favorites">
-                <h3>Favorite Orders</h3>
-                <div id="favorites-list">No favorite orders saved</div>
-            </div>
-
-            <!-- Discount Options -->
             <div class="discount-options">
-                <label><input type="checkbox" id="discount50" onchange="updateOrderSummary()"> 50% Discount</label>
-                <label><input type="checkbox" id="discount5" onchange="updateOrderSummary()"> 5% Discount</label>
+                <label><input type="checkbox" id="discount30" onchange="updateOrderSummary()"> 30% Discount</label>
+                <label><input type="checkbox" id="discount40" onchange="updateOrderSummary()"> 40% Employee Discount</label>
             </div>
 
-            <!-- Order Summary -->
-<div class="card" id="order-summary">
-    <h3>Order Summary 📝</h3>
-    <input type="text" id="order-name" placeholder="Order Name">
-    <div id="order-list">No items added</div>
-    <p class="subtotal">Subtotal: $<span id="subtotal">0.00</span></p>
-    <div class="order-actions">
-        <button onclick="clearOrder()">Clear Order 🚮</button>
-        <button onclick="saveAsFavorite()">Save as Favorite ⭐️</button>
-        <button onclick="completeOrder()">Complete Order 🎉</button>
-    </div>
-</div>
+            <div class="card" id="order-summary">
+                <h3>Order Summary</h3>
+                <input type="text" id="order-name" placeholder="Enter order name">
+                <div id="order-list">No items added</div>
+                <p class="subtotal">Subtotal: $<span id="subtotal">0.00</span></p>
+                <div class="order-actions">
+                    <button onclick="clearOrder()">Clear Order</button>
+                    <button onclick="completeOrder()">Complete Order</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         let order = {};
-        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        // Add names to existing favorites if they don't have them
-        favorites = favorites.map((fav, i) => ({
-            ...fav,
-            name: fav.name || `Favorite ${i + 1}`
-        }));
 
-        updateFavorites();
+        const menuItems = {
+            "Precious Metals & Jewelry": [
+                { name: "🥈 Silver Bar", quantities: [
+                    { amount: "x1", price: 283 },
+                    { amount: "x10", price: 2830 }
+                ]},
+                { name: "🥇 Gold Bar", quantities: [
+                    { amount: "x1", price: 405 },
+                    { amount: "x10", price: 4050 }
+                ]},
+                { name: "💍 Ring", quantities: [
+                    { amount: "x1", price: 145 },
+                    { amount: "x10", price: 1450 }
+                ]},
+                { name: "⌚ Gold Watch", quantities: [
+                    { amount: "x1", price: 170 },
+                    { amount: "x10", price: 1700 }
+                ]},
+                { name: "⌚ Rolex", quantities: [
+                    { amount: "x1", price: 405 },
+                    { amount: "x10", price: 4050 }
+                ]},
+                { name: "👂 Earrings", quantities: [
+                    { amount: "x1", price: 145 },
+                    { amount: "x10", price: 1450 }
+                ]},
+                { name: "⛓️ Gold Chain", quantities: [
+                    { amount: "x1", price: 170 },
+                    { amount: "x10", price: 1700 }
+                ]},
+                { name: "🪙 Gold Coin", quantities: [
+                    { amount: "x1", price: 72 },
+                    { amount: "x10", price: 720 }
+                ]}
+            ],
+            "Electronics": [
+                { name: "📺 Small TV", quantities: [
+                    { amount: "x1", price: 1458 },
+                    { amount: "x10", price: 14580 }
+                ]},
+                { name: "📺 Large TV", quantities: [
+                    { amount: "x1", price: 2430 },
+                    { amount: "x10", price: 24300 }
+                ]},
+                { name: "📻 Boombox", quantities: [
+                    { amount: "x1", price: 243 },
+                    { amount: "x10", price: 2430 }
+                ]},
+                { name: "🔥 Microwave", quantities: [
+                    { amount: "x1", price: 405 },
+                    { amount: "x10", price: 4050 }
+                ]},
+                { name: "💻 PC", quantities: [
+                    { amount: "x1", price: 202.50 },
+                    { amount: "x10", price: 2025 }
+                ]}
+            ],
+            "Valuable Items": [
+                { name: "💎 Valuable Goods", quantities: [
+                    { amount: "x1", price: 1620 },
+                    { amount: "x10", price: 16200 }
+                ]},
+                { name: "🏌️ Golf Clubs", quantities: [
+                    { amount: "x1", price: 364 },
+                    { amount: "x10", price: 3640 }
+                ]},
+                { name: "🎨 Art", quantities: [
+                    { amount: "x1", price: 2835 },
+                    { amount: "x10", price: 28350 }
+                ]}
+            ]
+        };
 
-        function addItem(name, price, quantity) {
+        // Generate menu items
+        function generateMenu() {
+            const itemGrid = document.getElementById("item-grid");
+            for (let category in menuItems) {
+                let categoryDiv = document.createElement("div");
+                categoryDiv.innerHTML = `<h4>${category}</h4>`;
+                menuItems[category].forEach(item => {
+                    let itemContainer = document.createElement("div");
+                    itemContainer.innerHTML = `<div class="item-name">${item.name}</div>`;
+                    
+                    item.quantities.forEach(qty => {
+                        let itemDiv = document.createElement("div");
+                        itemDiv.classList.add("item");
+                        itemDiv.textContent = `${qty.amount} - ${qty.price}`;
+                        itemDiv.onclick = () => addItem(`${item.name} ${qty.amount}`, qty.price);
+                        itemContainer.appendChild(itemDiv);
+                    });
+                    
+                    categoryDiv.appendChild(itemContainer);
+                });
+                itemGrid.appendChild(categoryDiv);
+            }
+        }
+
+        function addItem(name, price) {
             if (order[name]) {
-                order[name].quantity += quantity;
-                order[name].totalPrice += price * quantity;
+                order[name].quantity++;
+                order[name].totalPrice += price;
             } else {
-                order[name] = { quantity: quantity, totalPrice: price * quantity, price: price };
+                order[name] = { quantity: 1, price: price, totalPrice: price };
             }
             updateOrderSummary();
         }
 
         function updateOrderSummary() {
             const orderList = document.getElementById("order-list");
-            const subtotalDisplay = document.getElementById("subtotal");
-            const discount50 = document.getElementById("discount50").checked;
-            const discount5 = document.getElementById("discount5").checked;
+            const subtotal = document.getElementById("subtotal");
+            const discount30 = document.getElementById("discount30").checked;
+            const discount40 = document.getElementById("discount40").checked;
 
             orderList.innerHTML = "";
-            let subtotal = 0;
+            let subtotalValue = 0;
             let orderSummaryText = "";
 
             for (let itemName in order) {
                 let item = order[itemName];
-                subtotal += item.totalPrice;
+                subtotalValue += item.totalPrice;
                 orderSummaryText += `<li>${item.quantity}x ${itemName} - $${item.totalPrice.toFixed(2)}</li>`;
             }
 
-            if (discount50) {
-                subtotal *= 0.5;
-            } else if (discount5) {
-                subtotal *= 0.95;
+            if (discount30) {
+                subtotalValue *= 0.7;
+            } else if (discount40) {
+                subtotalValue *= 0.6;
             }
 
             orderList.innerHTML = Object.keys(order).length ? `<ul>${orderSummaryText}</ul>` : "No items added";
-            subtotalDisplay.textContent = subtotal.toFixed(2);
+            subtotal.textContent = subtotalValue.toFixed(2);
         }
+
+        document.getElementById("discount30").addEventListener("change", updateOrderSummary);
+        document.getElementById("discount40").addEventListener("change", updateOrderSummary);
 
         function clearOrder() {
             order = {};
@@ -384,118 +302,102 @@
         }
 
         function saveAsFavorite() {
-            if (Object.keys(order).length) {
-                const newFavorite = {
-                    ...order,
-                    name: `Favorite ${favorites.length + 1}`
-                };
-                favorites.push(newFavorite);
-                localStorage.setItem('favorites', JSON.stringify(favorites));
-                updateFavorites();
-            }
+            if (Object.keys(order).length === 0) return alert("Add items before saving!");
+            const orderName = document.getElementById("order-name").value || `Favorite`;
+            alert(`Order saved as ${orderName}`);
         }
 
-        function updateFavorites() {
-            const favoritesList = document.getElementById("favorites-list");
-            if (!favorites.length) {
-                favoritesList.innerHTML = "No favorite orders saved";
+        function completeOrder() {
+            const orderName = document.getElementById("order-name").value.trim();
+
+            if (!orderName) {
+                alert("Please enter your name to complete the order.");
+                return;
+            }
+
+            if (Object.keys(order).length === 0) {
+                alert("Add items to order before completing!");
+                return;
+            }
+
+            const orderSummary = Object.keys(order).map(itemName => {
+                return `${order[itemName].quantity}x ${itemName} - $${order[itemName].totalPrice.toFixed(2)}`;
+            }).join("\n");
+
+            let totalAmount = 0;
+            let discountApplied = null;
+            if (document.getElementById("discount30").checked) {
+                discountApplied = "30% Discount";
+                totalAmount = Object.values(order).reduce((sum, item) => sum + item.totalPrice, 0) * 0.7;
+            } else if (document.getElementById("discount40").checked) {
+                discountApplied = "40% Employee Discount";
+                totalAmount = Object.values(order).reduce((sum, item) => sum + item.totalPrice, 0) * 0.6;
             } else {
-                favoritesList.innerHTML = favorites
-                    .map((fav, i) => `
-                        <div class="favorite-item">
-                            <div class="favorite-name">
-                                <span onclick="startRename(${i})">${fav.name}</span>
-                            </div>
-                            <div class="favorite-actions">
-                                <button onclick="loadFavorite(${i})">Load</button>
-                                <button onclick="renameFavorite(${i})" class="rename-button">Rename</button>
-                                <button onclick="deleteFavorite(${i})" class="delete-button">Delete</button>
-                            </div>
-                        </div>
-                    `)
-                    .join("");
+                totalAmount = Object.values(order).reduce((sum, item) => sum + item.totalPrice, 0);
             }
+
+            const data = {
+                username: "OrderBot",
+                avatar_url: "/api/placeholder/512/512",
+                content: "A new order has been completed!",
+                embeds: [{
+                    title: `Order Summary by ${orderName}`,
+                    description: `
+                        **Items Ordered:**
+                        \n${orderSummary}
+                        \n
+                        **Discount Applied:** ${discountApplied ? discountApplied : "None"}
+                        \n**Total Amount:** ${totalAmount.toFixed(2)}
+                    `,
+                    fields: [
+                        {
+                            name: "Total Items",
+                            value: Object.keys(order).length.toString(),
+                            inline: true
+                        },
+                        {
+                            name: "Discount",
+                            value: discountApplied ? discountApplied : "None",
+                            inline: true
+                        },
+                        {
+                            name: "Total Amount",
+                            value: `${totalAmount.toFixed(2)}`,
+                            inline: true
+                        }
+                    ],
+                    color: 0x2F3136,
+                    footer: {
+                        text: "Order completed successfully!"
+                    },
+                    timestamp: new Date()
+                }]
+            };
+
+            const webhookUrl = "https://discord.com/api/webhooks/1304960764276248687/gz9IkRYciuiD2FyRPETVvVfoNas7tCMN4Hi5w8woN5XxRrWrM3m8MzfasWXNo-Y-MfA0";
+
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Order completed successfully!");
+                    clearOrder();
+                } else {
+                    response.text().then(text => {
+                        alert(`Failed to complete order: ${text}`);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error sending webhook:", error);
+                alert("Error occurred while completing the order.");
+            });
         }
 
-        function startRename(index) {
-            const favoriteNameElement = document.querySelector(`#favorites-list .favorite-item:nth-child(${index + 1}) .favorite-name`);
-            const currentName = favorites[index].name;
-            favoriteNameElement.innerHTML = `
-                <input type="text" value="${currentName}" onblur="finishRename(${index}, this.value)" onkeypress="handleRenameKeyPress(event, ${index}, this)">
-            `;
-            favoriteNameElement.querySelector('input').focus();
-        }
-
-        function handleRenameKeyPress(event, index, input) {
-            if (event.key === 'Enter') {
-                finishRename(index, input.value);
-            }
-        }
-
-        function renameFavorite(index) {
-            startRename(index);
-        }
-
-        function finishRename(index, newName) {
-            if (newName.trim()) {
-                favorites[index].name = newName.trim();
-                localStorage.setItem('favorites', JSON.stringify(favorites));
-                updateFavorites();
-            }
-        }
-
-        function deleteFavorite(index) {
-            favorites.splice(index, 1);
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            updateFavorites();
-        }
-
-        function loadFavorite(index) {
-            order = { ...favorites[index] };
-            delete order.name; // Remove the name property from the loaded order
-            updateOrderSummary();
-        }
-       
-   function completeOrder() {
-    const orderSummary = document.getElementById("order-list");
-    const orderName = document.getElementById("order-name").value;
-    const subtotal = document.getElementById("subtotal").textContent;
-
-    const orderSummaryText = orderSummary.innerHTML.replace(/<ul>/g, '').replace(/<\/ul>/g, '').replace(/<li>/g, '* ').replace(/<\/li>/g, '\n');
-
-    const embed = {
-        "title": "Order Summary",
-        "description": `${orderName}\n\n${orderSummaryText}`,
-        "fields": [
-            {
-                "name": "Subtotal",
-                "value": `$${subtotal}`,
-                "inline": true
-            }
-        ],
-        "color": 0x0099ff
-    };
-
-    const orderData = {
-        "content": "",
-        "embeds": [embed],
-        "username": "MRP-Dreamworks",
-        "avatar_url": "https://example.com/avatar.png"
-    };
-
-    fetch('https://discord.com/api/webhooks/1304960414563700786/1OXg_6GHSgUYSjnvz8lj0JGTb08xO5bBSNTyiXdz_agxJ_WI-DUFx-VH9PpZG7Hbbd1c', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(orderData)
-    })
-.then(response => response.json())
-.then(data => console.log(data))
-.catch(error => console.error(error));
-
-    clearOrder();
-}
+        generateMenu();
     </script>
 </body>
 </html>
